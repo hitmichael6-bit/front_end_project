@@ -17,6 +17,9 @@ import {
 } from "recharts";
 import { CURRENCIES } from "../services/currencyService";
 
+/**
+ * Color palette for pie chart segments
+ */
 const COLORS = [
   "#0088FE",
   "#00C49F",
@@ -26,6 +29,12 @@ const COLORS = [
   "#82CA9D",
 ];
 
+/**
+ * PieChartView component - Visualizes monthly costs grouped by category using a pie chart
+ * @param {Object} props - Component props
+ * @param {Function} props.onGetCategoryData - Callback to fetch category-wise cost data by year, month, and currency
+ * @returns {JSX.Element} Pie chart displaying cost distribution across categories
+ */
 const PieChartView = ({ onGetCategoryData }) => {
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
@@ -52,6 +61,9 @@ const PieChartView = ({ onGetCategoryData }) => {
     { value: 12, label: "December" },
   ];
 
+  /**
+   * Fetches and sets category cost data based on selected year, month, and currency
+   */
   const handleGetData = async () => {
     try {
       setHasRequested(true);

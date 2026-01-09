@@ -10,6 +10,12 @@ import {
 } from "@mui/material";
 import { CURRENCIES } from "../services/currencyService";
 
+/**
+ * AddCostForm component - Provides a form interface for adding new cost entries
+ * @param {Object} props - Component props
+ * @param {Function} props.onCostAdded - Callback function invoked when a cost is successfully added
+ * @returns {JSX.Element} Rendered form component with input fields for cost details
+ */
 const AddCostForm = ({ onCostAdded }) => {
   const [sum, setSum] = useState("");
   const [currency, setCurrency] = useState("USD");
@@ -18,6 +24,10 @@ const AddCostForm = ({ onCostAdded }) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
+  /**
+   * Handles form submission - Validates input and adds cost to database
+   * @param {Event} e - Form submit event
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");

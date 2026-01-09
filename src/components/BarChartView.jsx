@@ -19,6 +19,12 @@ import {
 } from "recharts";
 import { CURRENCIES } from "../services/currencyService";
 
+/**
+ * BarChartView component - Displays yearly cost data as a bar chart visualization
+ * @param {Object} props - Component props
+ * @param {Function} props.onGetYearlyData - Callback to fetch yearly cost data by year and currency
+ * @returns {JSX.Element} Bar chart with year/currency selectors showing monthly cost breakdown
+ */
 const BarChartView = ({ onGetYearlyData }) => {
   const currentYear = new Date().getFullYear();
 
@@ -29,6 +35,9 @@ const BarChartView = ({ onGetYearlyData }) => {
 
   const years = Array.from({ length: 10 }, (_, i) => currentYear - i);
 
+  /**
+   * Fetches and sets yearly cost data based on selected year and currency
+   */
   const handleGetData = async () => {
     try {
       setHasRequested(true);

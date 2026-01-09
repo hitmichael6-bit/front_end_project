@@ -12,18 +12,29 @@ import {
   setExchangeRateUrl,
 } from "../services/currencyService";
 
+/**
+ * Settings component - Manages application settings including exchange rate URL configuration
+ * @returns {JSX.Element} Settings form for configuring exchange rate API endpoint
+ */
 const Settings = () => {
   const [url, setUrl] = useState("");
   const [rates, setRates] = useState(null);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
+  /**
+   * Lifecycle hook - Loads saved exchange rate URL and fetches current rates on component mount
+   */
   useEffect(() => {
     const savedUrl = getExchangeRateUrl();
     setUrl(savedUrl);
     fetchRates(savedUrl);
   }, []);
 
+  /**
+   * Fetches exchange rates from the provided URL
+   * @param {string} ratesUrl - URL endpoint for exchange rate API
+   */
   const fetchRates = async (ratesUrl) => {
     try {
       setError("");
@@ -36,6 +47,9 @@ const Settings = () => {
     }
   };
 
+  /**
+   * Saves the exchange rate URL to local storage and fetches updated rates
+   */
   const handleSave = () => {
     setExchangeRateUrl(url);
     fetchRates(url);

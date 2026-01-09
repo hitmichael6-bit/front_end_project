@@ -15,6 +15,12 @@ import {
 } from "@mui/material";
 import { CURRENCIES } from "../services/currencyService";
 
+/**
+ * MonthlyReport component - Displays detailed monthly cost report in tabular format
+ * @param {Object} props - Component props
+ * @param {Function} props.onGetReport - Callback to fetch monthly report data by year, month, and currency
+ * @returns {JSX.Element} Monthly report table with cost details and total summary
+ */
 const MonthlyReport = ({ onGetReport }) => {
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
@@ -41,6 +47,9 @@ const MonthlyReport = ({ onGetReport }) => {
     { value: 12, label: "December" },
   ];
 
+  /**
+   * Fetches and sets monthly report data based on selected year, month, and currency
+   */
   const handleGetReport = async () => {
     try {
       setHasRequested(true);
