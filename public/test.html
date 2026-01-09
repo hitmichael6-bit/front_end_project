@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>idb.js Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 900px;
+        margin: 40px auto;
+      }
+      .test {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+      }
+      .pass {
+        background: #e6fffa;
+        border-left: 5px solid #2ecc71;
+      }
+      .fail {
+        background: #ffe6e6;
+        border-left: 5px solid #e74c3c;
+      }
+      pre {
+        background: #f6f6f6;
+        padding: 10px;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>idb.js Automated Test</h1>
+    <div id="output"></div>
+
+    <script src="idb.js"></script>
+    <script>
+      const output = document.getElementById("output");
+
+      function printResult(title, passed, data = null) {
+        const div = document.createElement("div");
+        div.className = `test ${passed ? "pass" : "fail"}`;
+        div.innerHTML = `<strong>${passed ? "PASS" : "FAIL"}:</strong> ${title}`;
+
+        if (data) {
+          const pre = document.createElement("pre");
+          pre.textContent = JSON.stringify(data, null, 2);
+          div.appendChild(pre);
+        }
+
+        output.appendChild(div);
+      }
+
+      async function runTests() {
+        let db;
+
+        try {
+          // TEST 1: openCostsDB
+          db = await idb.openCostsDB("costsdb", 1);
+          printResult("openCostsDB()", true);
+        } catch (e) {
+          printResult("openCostsDB()", false, e.message);
+          return;
+        }
+
+        try {
+          // TEST 2: addCost #1
+          const r1 = await db.addCost({
+            sum: 200,
+            currency: "USD",
+            category: "FOOD",
+            description: "pizza",
+          });
+          printResult("addCost() – first item", true, r1);
+        } catch (e) {
+          printResult("addCost() – first item", false, e.message);
+        }
+
+        try {
+          // TEST 3: addCost #2
+          const r2 = await db.addCost({
+            sum: 400,
+            currency: "USD",
+            category: "CAR",
+            description: "fuel",
+          });
+          printResult("addCost() – second item", true, r2);
+        } catch (e) {
+          printResult("addCost() – second item", false, e.message);
+        }
+
+        try {
+          // TEST 4: getReport
+          const now = new Date();
+          const report = await db.getReport(
+            now.getFullYear(),
+            now.getMonth() + 1,
+            "USD"
+          );
+          printResult("getReport()", true, report);
+        } catch (e) {
+          printResult("getReport()", false, e.message);
+        }
+      }
+
+      runTests();
+    </script>
+  </body>
+</html>
