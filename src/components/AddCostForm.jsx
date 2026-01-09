@@ -1,4 +1,6 @@
+// Import React and useState hook for managing component state
 import React, { useState } from "react";
+// Import Material-UI components for form layout and styling
 import {
   Box,
   TextField,
@@ -8,6 +10,7 @@ import {
   Typography,
   Alert,
 } from "@mui/material";
+// Import currency constants from the currency service
 import { CURRENCIES } from "../services/currencyService";
 
 /**
@@ -17,11 +20,17 @@ import { CURRENCIES } from "../services/currencyService";
  * @returns {JSX.Element} Rendered form component with input fields for cost details
  */
 const AddCostForm = ({ onCostAdded }) => {
+  // State for managing the cost amount input
   const [sum, setSum] = useState("");
+  // State for managing the selected currency (defaults to USD)
   const [currency, setCurrency] = useState("USD");
+  // State for managing the category input
   const [category, setCategory] = useState("");
+  // State for managing the description input
   const [description, setDescription] = useState("");
+  // State for displaying error messages
   const [error, setError] = useState("");
+  // State for displaying success messages
   const [success, setSuccess] = useState(false);
 
   /**
@@ -29,21 +38,26 @@ const AddCostForm = ({ onCostAdded }) => {
    * @param {Event} e - Form submit event
    */
   const handleSubmit = async (e) => {
+    // Prevent default form submission behavior
     e.preventDefault();
+    // Clear any existing error and success messages
     setError("");
     setSuccess(false);
 
+    // Validate that amount is a positive number
     if (!sum || parseFloat(sum) <= 0) {
       setError("Please enter a valid amount");
       return;
     }
 
+    // Validate that category is not empty
     if (!category.trim()) {
       setError("Please enter a category");
       return;
     }
 
     try {
+      // Call parent callback to add cost to database
       await onCostAdded({
         sum: parseFloat(sum),
         currency,
@@ -51,13 +65,17 @@ const AddCostForm = ({ onCostAdded }) => {
         description: description.trim(),
       });
 
+      // Clear all form fields after successful submission
       setSum("");
       setCategory("");
       setDescription("");
+      // Display success message
       setSuccess(true);
 
+      // Auto-hide success message after 3 seconds
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
+      // Display error message if submission fails
       setError("Failed to add cost item");
     }
   };
@@ -107,6 +125,7 @@ const AddCostForm = ({ onCostAdded }) => {
           margin="normal"
           required
         >
+          {/* Map through available currencies to create menu items */}
           {CURRENCIES.map((curr) => (
             <MenuItem key={curr} value={curr}>
               {curr}
@@ -150,4 +169,5 @@ const AddCostForm = ({ onCostAdded }) => {
   );
 };
 
+// Export AddCostForm component as default export
 export default AddCostForm;

@@ -1,4 +1,6 @@
+// Import React and useState hook for managing component state
 import React, { useState } from "react";
+// Import Material-UI components for form, table, and layout
 import {
   Box,
   TextField,
@@ -13,6 +15,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+// Import currency constants from the currency service
 import { CURRENCIES } from "../services/currencyService";
 
 /**
@@ -22,16 +25,24 @@ import { CURRENCIES } from "../services/currencyService";
  * @returns {JSX.Element} Monthly report table with cost details and total summary
  */
 const MonthlyReport = ({ onGetReport }) => {
+  // Get the current year and month for default values
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
 
+  // State for managing selected year filter
   const [year, setYear] = useState(currentYear);
+  // State for managing selected month filter
   const [month, setMonth] = useState(currentMonth);
+  // State for managing selected currency for conversion
   const [currency, setCurrency] = useState("USD");
+  // State for storing the fetched report data
   const [report, setReport] = useState(null);
+  // State to track if user has requested a report
   const [hasRequested, setHasRequested] = useState(false);
 
+  // Generate array of years for the dropdown (current year and 9 previous years)
   const years = Array.from({ length: 10 }, (_, i) => currentYear - i);
+  // Array of month objects with value and label for the dropdown
   const months = [
     { value: 1, label: "January" },
     { value: 2, label: "February" },
@@ -52,14 +63,19 @@ const MonthlyReport = ({ onGetReport }) => {
    */
   const handleGetReport = async () => {
     try {
+      // Mark that a report has been requested
       setHasRequested(true);
+      // Fetch report data from parent component callback
       const reportData = await onGetReport(year, month, currency);
+      // Store the fetched report in state
       setReport(reportData);
     } catch (err) {
+      // Log any errors that occur during report fetching
       console.error("Failed to get report:", err);
     }
   };
 
+  // Check if report was requested but contains no cost data
   const hasNoData = hasRequested && report && report.costs.length === 0;
 
   return (
@@ -110,6 +126,7 @@ const MonthlyReport = ({ onGetReport }) => {
           onChange={(e) => setCurrency(e.target.value)}
           sx={{ minWidth: 100 }}
         >
+          {/* Map through available currencies to create menu items */}
           {CURRENCIES.map((curr) => (
             <MenuItem key={curr} value={curr}>
               {curr}
@@ -152,6 +169,7 @@ const MonthlyReport = ({ onGetReport }) => {
               </TableHead>
               {/* Table body with cost data rows */}
               <TableBody>
+                {/* Map through cost items to create table rows */}
                 {report.costs.map((cost, index) => (
                   <TableRow key={index}>
                     <TableCell>{cost.Date.day}</TableCell>
@@ -177,4 +195,5 @@ const MonthlyReport = ({ onGetReport }) => {
   );
 };
 
+// Export MonthlyReport component as default export
 export default MonthlyReport;

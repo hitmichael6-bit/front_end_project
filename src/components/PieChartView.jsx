@@ -1,4 +1,6 @@
+// Import React and useState hook for managing component state
 import React, { useState } from "react";
+// Import Material-UI components for form and layout
 import {
   Box,
   TextField,
@@ -7,6 +9,7 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
+// Import Recharts components for pie chart visualization
 import {
   PieChart,
   Pie,
@@ -15,11 +18,13 @@ import {
   Legend,
   Tooltip,
 } from "recharts";
+// Import currency constants from the currency service
 import { CURRENCIES } from "../services/currencyService";
 
 /**
  * Color palette for pie chart segments
  */
+// Array of hex colors for different pie chart slices
 const COLORS = [
   "#0088FE",
   "#00C49F",
@@ -36,16 +41,24 @@ const COLORS = [
  * @returns {JSX.Element} Pie chart displaying cost distribution across categories
  */
 const PieChartView = ({ onGetCategoryData }) => {
+  // Get the current year and month for default values
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
 
+  // State for managing selected year filter
   const [year, setYear] = useState(currentYear);
+  // State for managing selected month filter
   const [month, setMonth] = useState(currentMonth);
+  // State for managing selected currency for conversion
   const [currency, setCurrency] = useState("USD");
+  // State for storing the fetched chart data
   const [data, setData] = useState([]);
+  // State to track if user has requested chart data
   const [hasRequested, setHasRequested] = useState(false);
 
+  // Generate array of years for the dropdown (current year and 9 previous years)
   const years = Array.from({ length: 10 }, (_, i) => currentYear - i);
+  // Array of month objects with value and label for the dropdown
   const months = [
     { value: 1, label: "January" },
     { value: 2, label: "February" },
@@ -66,10 +79,14 @@ const PieChartView = ({ onGetCategoryData }) => {
    */
   const handleGetData = async () => {
     try {
+      // Mark that chart data has been requested
       setHasRequested(true);
+      // Fetch category data from parent component callback
       const chartData = await onGetCategoryData(year, month, currency);
+      // Store the fetched data in state for chart rendering
       setData(chartData);
     } catch (err) {
+      // Log any errors that occur during data fetching
       console.error("Failed to get chart data:", err);
     }
   };
@@ -160,6 +177,7 @@ const PieChartView = ({ onGetCategoryData }) => {
               dataKey="value"
             >
               {/* Map data entries to colored pie slices */}
+              {/* Each slice gets a color from the COLORS array */}
               {data.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
@@ -178,4 +196,5 @@ const PieChartView = ({ onGetCategoryData }) => {
   );
 };
 
+// Export PieChartView component as default export
 export default PieChartView;

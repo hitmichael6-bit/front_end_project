@@ -5,9 +5,11 @@
  */
 
 // List of supported currency symbols (as required by the project)
+// These currencies are available for cost entry and reporting
 export const CURRENCIES = ["USD", "ILS", "GBP", "EURO"];
 
 // Default public URL for fetching exchange rates (fallback)
+// This URL is used if the user hasn't configured a custom URL
 export const DEFAULT_EXCHANGE_RATE_URL =
   "https://hitmichael6-bit.github.io/FrontEndCosts/rates.json";
 
@@ -17,6 +19,7 @@ export const DEFAULT_EXCHANGE_RATE_URL =
  * Otherwise, the default public URL is used.
  */
 export const getExchangeRateUrl = () => {
+  // Attempt to retrieve custom URL from local storage, fallback to default
   return localStorage.getItem("exchangeRateUrl") || DEFAULT_EXCHANGE_RATE_URL;
 };
 
@@ -25,5 +28,6 @@ export const getExchangeRateUrl = () => {
  * The value is persisted in localStorage and used by idb.js.
  */
 export const setExchangeRateUrl = (url) => {
+  // Store the custom URL in browser's local storage
   localStorage.setItem("exchangeRateUrl", url);
 };

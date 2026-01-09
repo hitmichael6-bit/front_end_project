@@ -1,4 +1,6 @@
+// Import React and useState hook for managing component state
 import React, { useState } from "react";
+// Import Material-UI components for form and layout
 import {
   Box,
   TextField,
@@ -7,6 +9,7 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
+// Import Recharts components for bar chart visualization
 import {
   BarChart,
   Bar,
@@ -17,6 +20,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+// Import currency constants from the currency service
 import { CURRENCIES } from "../services/currencyService";
 
 /**
@@ -26,13 +30,19 @@ import { CURRENCIES } from "../services/currencyService";
  * @returns {JSX.Element} Bar chart with year/currency selectors showing monthly cost breakdown
  */
 const BarChartView = ({ onGetYearlyData }) => {
+  // Get the current year for default value
   const currentYear = new Date().getFullYear();
 
+  // State for managing selected year filter
   const [year, setYear] = useState(currentYear);
+  // State for managing selected currency for conversion
   const [currency, setCurrency] = useState("USD");
+  // State for storing the fetched chart data
   const [data, setData] = useState([]);
+  // State to track if user has requested chart data
   const [hasRequested, setHasRequested] = useState(false);
 
+  // Generate array of years for the dropdown (current year and 9 previous years)
   const years = Array.from({ length: 10 }, (_, i) => currentYear - i);
 
   /**
@@ -40,14 +50,19 @@ const BarChartView = ({ onGetYearlyData }) => {
    */
   const handleGetData = async () => {
     try {
+      // Mark that chart data has been requested
       setHasRequested(true);
+      // Fetch yearly data from parent component callback
       const chartData = await onGetYearlyData(year, currency);
+      // Store the fetched data in state for chart rendering
       setData(chartData);
     } catch (err) {
+      // Log any errors that occur during data fetching
       console.error("Failed to get yearly data:", err);
     }
   };
 
+  // Check if any month has data with a total greater than zero
   const hasAnyData = data.some((item) => Number(item.total) > 0);
 
   return (
@@ -122,6 +137,7 @@ const BarChartView = ({ onGetYearlyData }) => {
             {/* Legend explaining the chart data */}
             <Legend />
             {/* Bar representation of monthly totals */}
+            {/* Each bar shows the total cost for that month */}
             <Bar dataKey="total" fill="#8884d8" name={`Total (${currency})`} />
           </BarChart>
         </ResponsiveContainer>
@@ -130,4 +146,5 @@ const BarChartView = ({ onGetYearlyData }) => {
   );
 };
 
+// Export BarChartView component as default export
 export default BarChartView;
