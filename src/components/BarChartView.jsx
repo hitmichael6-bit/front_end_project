@@ -51,12 +51,16 @@ const BarChartView = ({ onGetYearlyData }) => {
   const hasAnyData = data.some((item) => Number(item.total) > 0);
 
   return (
+    // Main container paper with elevation shadow and centered layout
     <Paper elevation={3} sx={{ p: 3, maxWidth: 900, mx: "auto", mt: 3 }}>
+      {/* Chart title */}
       <Typography variant="h5" gutterBottom>
         Yearly Costs (Bar Chart)
       </Typography>
 
+      {/* Filter controls section - Year and Currency selectors with Show Chart button */}
       <Box sx={{ display: "flex", gap: 2, mb: 3 }}>
+        {/* Year selector dropdown */}
         <TextField
           select
           label="Year"
@@ -71,6 +75,7 @@ const BarChartView = ({ onGetYearlyData }) => {
           ))}
         </TextField>
 
+        {/* Currency selector dropdown */}
         <TextField
           select
           label="Currency"
@@ -85,6 +90,7 @@ const BarChartView = ({ onGetYearlyData }) => {
           ))}
         </TextField>
 
+        {/* Button to fetch and display chart data */}
         <Button
           variant="contained"
           onClick={handleGetData}
@@ -94,20 +100,28 @@ const BarChartView = ({ onGetYearlyData }) => {
         </Button>
       </Box>
 
+      {/* Display message when no data exists for the selected period */}
       {hasRequested && data.length > 0 && !hasAnyData && (
         <Typography color="text.secondary" align="center">
           No data for selected period
         </Typography>
       )}
 
+      {/* Display bar chart when data is available */}
       {data.length > 0 && hasAnyData && (
         <ResponsiveContainer width="100%" height={400}>
           <BarChart data={data}>
+            {/* Grid lines for chart readability */}
             <CartesianGrid strokeDasharray="3 3" />
+            {/* X-axis showing months */}
             <XAxis dataKey="month" />
+            {/* Y-axis showing cost values */}
             <YAxis />
+            {/* Tooltip for hovering over bars */}
             <Tooltip />
+            {/* Legend explaining the chart data */}
             <Legend />
+            {/* Bar representation of monthly totals */}
             <Bar dataKey="total" fill="#8884d8" name={`Total (${currency})`} />
           </BarChart>
         </ResponsiveContainer>

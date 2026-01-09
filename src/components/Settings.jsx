@@ -58,23 +58,28 @@ const Settings = () => {
   };
 
   return (
+    // Main container paper with elevation shadow and centered layout
     <Paper elevation={3} sx={{ p: 3, maxWidth: 600, mx: "auto", mt: 3 }}>
+      {/* Settings page title */}
       <Typography variant="h5" gutterBottom>
         Settings
       </Typography>
 
+      {/* Success alert message - displayed when settings are saved successfully */}
       {success && (
         <Alert severity="success" sx={{ mb: 2 }}>
           Settings saved successfully!
         </Alert>
       )}
 
+      {/* Error alert message - displayed when exchange rates fail to load */}
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
           {error}
         </Alert>
       )}
 
+      {/* Exchange rate URL input field */}
       <TextField
         fullWidth
         label="Exchange Rate URL"
@@ -84,6 +89,7 @@ const Settings = () => {
         helperText="Enter the URL for fetching exchange rates (JSON format)"
       />
 
+      {/* Button to save the exchange rate URL setting */}
       <Button
         variant="contained"
         color="primary"
@@ -93,9 +99,12 @@ const Settings = () => {
         Save Settings
       </Button>
 
+      {/* Display current exchange rates if successfully loaded */}
       {rates && (
         <Box sx={{ mt: 3 }}>
+          {/* Exchange rates section title */}
           <Typography variant="subtitle1">Current Exchange Rates</Typography>
+          {/* Display individual currency rates */}
           <Typography>USD: {rates.USD}</Typography>
           <Typography>ILS: {rates.ILS}</Typography>
           <Typography>GBP: {rates.GBP}</Typography>

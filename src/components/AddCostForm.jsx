@@ -63,23 +63,29 @@ const AddCostForm = ({ onCostAdded }) => {
   };
 
   return (
+    // Main container paper with elevation shadow and centered layout
     <Paper elevation={3} sx={{ p: 3, maxWidth: 600, mx: "auto", mt: 3 }}>
+      {/* Form title */}
       <Typography variant="h5" gutterBottom>
         Add New Cost
       </Typography>
 
+      {/* Error alert message - displayed when validation fails or submission error occurs */}
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
           {error}
         </Alert>
       )}
+      {/* Success alert message - displayed when cost is successfully added */}
       {success && (
         <Alert severity="success" sx={{ mb: 2 }}>
           Cost added successfully!
         </Alert>
       )}
 
+      {/* Form container with submit handler */}
       <Box component="form" onSubmit={handleSubmit}>
+        {/* Amount input field - numeric input with decimal support */}
         <TextField
           fullWidth
           label="Amount"
@@ -91,6 +97,7 @@ const AddCostForm = ({ onCostAdded }) => {
           inputProps={{ step: "0.01", min: "0" }}
         />
 
+        {/* Currency selector dropdown */}
         <TextField
           fullWidth
           select
@@ -107,6 +114,7 @@ const AddCostForm = ({ onCostAdded }) => {
           ))}
         </TextField>
 
+        {/* Category input field - required text field */}
         <TextField
           fullWidth
           label="Category"
@@ -116,6 +124,7 @@ const AddCostForm = ({ onCostAdded }) => {
           required
         />
 
+        {/* Description input field - optional multiline text area */}
         <TextField
           fullWidth
           label="Description"
@@ -126,6 +135,7 @@ const AddCostForm = ({ onCostAdded }) => {
           rows={3}
         />
 
+        {/* Submit button to add the cost entry */}
         <Button
           type="submit"
           variant="contained"

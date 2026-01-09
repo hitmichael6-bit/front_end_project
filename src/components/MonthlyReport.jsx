@@ -63,12 +63,16 @@ const MonthlyReport = ({ onGetReport }) => {
   const hasNoData = hasRequested && report && report.costs.length === 0;
 
   return (
+    // Main container paper with elevation shadow and centered layout
     <Paper elevation={3} sx={{ p: 3, maxWidth: 900, mx: "auto", mt: 3 }}>
+      {/* Report title */}
       <Typography variant="h5" gutterBottom>
         Monthly Report
       </Typography>
 
+      {/* Filter controls section - Year, Month, Currency selectors and Get Report button */}
       <Box sx={{ display: "flex", gap: 2, mb: 3 }}>
+        {/* Year selector dropdown */}
         <TextField
           select
           label="Year"
@@ -83,6 +87,7 @@ const MonthlyReport = ({ onGetReport }) => {
           ))}
         </TextField>
 
+        {/* Month selector dropdown */}
         <TextField
           select
           label="Month"
@@ -97,6 +102,7 @@ const MonthlyReport = ({ onGetReport }) => {
           ))}
         </TextField>
 
+        {/* Currency selector dropdown */}
         <TextField
           select
           label="Currency"
@@ -111,6 +117,7 @@ const MonthlyReport = ({ onGetReport }) => {
           ))}
         </TextField>
 
+        {/* Button to fetch the report based on selected filters */}
         <Button
           variant="contained"
           onClick={handleGetReport}
@@ -120,16 +127,20 @@ const MonthlyReport = ({ onGetReport }) => {
         </Button>
       </Box>
 
+      {/* Display message when no data is available for the selected period */}
       {hasNoData && (
         <Typography color="text.secondary" align="center">
           No data for selected period
         </Typography>
       )}
 
+      {/* Display report table when data is available */}
       {report && report.costs.length > 0 && (
         <Box>
+          {/* Table displaying all cost entries */}
           <TableContainer>
             <Table>
+              {/* Table header with column names */}
               <TableHead>
                 <TableRow>
                   <TableCell>Date</TableCell>
@@ -139,6 +150,7 @@ const MonthlyReport = ({ onGetReport }) => {
                   <TableCell>Currency</TableCell>
                 </TableRow>
               </TableHead>
+              {/* Table body with cost data rows */}
               <TableBody>
                 {report.costs.map((cost, index) => (
                   <TableRow key={index}>
@@ -153,6 +165,7 @@ const MonthlyReport = ({ onGetReport }) => {
             </Table>
           </TableContainer>
 
+          {/* Total sum section displayed at the bottom right */}
           <Box sx={{ mt: 3, textAlign: "right" }}>
             <Typography variant="h6">
               Total: {report.total.total.toFixed(2)} {report.total.currency}

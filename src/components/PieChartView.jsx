@@ -75,12 +75,16 @@ const PieChartView = ({ onGetCategoryData }) => {
   };
 
   return (
+    // Main container paper with elevation shadow and centered layout
     <Paper elevation={3} sx={{ p: 3, maxWidth: 900, mx: "auto", mt: 3 }}>
+      {/* Chart title */}
       <Typography variant="h5" gutterBottom>
         Costs by Category (Pie Chart)
       </Typography>
 
+      {/* Filter controls section - Year, Month, Currency selectors and Show Chart button */}
       <Box sx={{ display: "flex", gap: 2, mb: 3 }}>
+        {/* Year selector dropdown */}
         <TextField
           select
           label="Year"
@@ -95,6 +99,7 @@ const PieChartView = ({ onGetCategoryData }) => {
           ))}
         </TextField>
 
+        {/* Month selector dropdown */}
         <TextField
           select
           label="Month"
@@ -109,6 +114,7 @@ const PieChartView = ({ onGetCategoryData }) => {
           ))}
         </TextField>
 
+        {/* Currency selector dropdown */}
         <TextField
           select
           label="Currency"
@@ -123,6 +129,7 @@ const PieChartView = ({ onGetCategoryData }) => {
           ))}
         </TextField>
 
+        {/* Button to fetch and display chart data */}
         <Button
           variant="contained"
           onClick={handleGetData}
@@ -131,14 +138,17 @@ const PieChartView = ({ onGetCategoryData }) => {
           Show Chart
         </Button>
       </Box>
+      {/* Display message when no data exists for the selected period */}
       {hasRequested && data.length === 0 && (
         <Typography color="text.secondary" align="center">
           No data for selected period
         </Typography>
       )}
+      {/* Display pie chart when data is available */}
       {data.length > 0 && (
         <ResponsiveContainer width="100%" height={400}>
           <PieChart>
+            {/* Pie chart component showing category distribution */}
             <Pie
               data={data}
               cx="50%"
@@ -149,6 +159,7 @@ const PieChartView = ({ onGetCategoryData }) => {
               fill="#8884d8"
               dataKey="value"
             >
+              {/* Map data entries to colored pie slices */}
               {data.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
@@ -156,7 +167,9 @@ const PieChartView = ({ onGetCategoryData }) => {
                 />
               ))}
             </Pie>
+            {/* Tooltip for hovering over pie slices */}
             <Tooltip />
+            {/* Legend showing category names and colors */}
             <Legend />
           </PieChart>
         </ResponsiveContainer>
